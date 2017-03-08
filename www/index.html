@@ -1,45 +1,93 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <title></title>
 
-    <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="manifest.json">
 
-    <!-- un-comment this code to enable service worker
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js')
-          .then(() => console.log('service worker installed'))
-          .catch(err => console.log('Error', err));
-      }
-    </script>-->
+  <!-- un-comment this code to enable service worker
+  <script>
+  if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js')
+  .then(() => console.log('service worker installed'))
+  .catch(err => console.log('Error', err));
+}
+</script>-->
 
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+<link href="lib/ionic/css/ionic.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
 
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
-    <link href="css/ionic.app.css" rel="stylesheet">
-    -->
+<!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+<link href="css/ionic.app.css" rel="stylesheet">
+-->
 
-    <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
+<!-- ionic/angularjs js -->
+<script src="lib/ionic/js/ionic.bundle.js"></script>
 
-    <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
+<!-- cordova script (this will be a 404 during development) -->
+<script src="cordova.js"></script>
 
-    <!-- your app's js -->
-    <script src="js/app.js"></script>
-  </head>
-  <body ng-app="starter">
+<!-- your app's js -->
+<script src="js/app.js"></script>
+<script src="js/controllers.js"></script>
+</head>
+<body ng-app="starter">
 
-    <ion-pane>
-      <ion-header-bar class="bar-stable">
-        <h1 class="title">Ionic Blank Starter</h1>
-      </ion-header-bar>
-      <ion-content>
-      </ion-content>
-    </ion-pane>
-  </body>
+  <ion-pane>
+    <ion-header-bar class="bar-stable">
+      <h1 class="title">PhoneBook Cursor</h1>
+    </ion-header-bar>
+    <ion-content>
+      <div ng-controller="listRegionesComunasCtrl">
+        <label class="item item-input">
+          <span class="input-label">Nombre</span>
+          <input type="text" ng-model="searchNombre">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Apellido</span>
+          <input type="text" ng-model="searchApellido">
+        </label>
+        <!--REGIONES-->
+        <div class="regiones">
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Región
+            </div>
+            <select ng-model="r[$index]" ng-options="region as region.nombre for region in regiones track by region.id">
+            </select>
+          </label>
+        </div>
+        <!--COMUNAS-->
+        <div class="comunas">
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Comunas
+            </div>
+            <select ng-model="searchCom" ng-options="comunas as comunas.nombre for comunas in r[$index].comunas track by comunas.nombre">
+            </select>
+          </label>
+        </div>
+
+        <div>
+          <button class="button button-full button-balanced" onclick="window.location.reload()">
+            Refrescar Filtros
+          </button>
+        </div>
+        <h4 class="title" align="center">Usuarios Registrados</h4>
+        <div ng-controller="listPersonasCtrl">
+          <div class="list" ng-repeat="personas in datapersonas|filter:{nombre:searchNombre, apellido:searchApellido, direccion:{comuna:searchCom}}">
+            <a class="item item-avatar" href="#">
+              <img src="http://psdexport.com/storage/avatars/default.png">
+              <h2>{{personas.nombre}} {{personas.apellido}}</h2>
+              <p>{{personas.direccion.calle}} {{personas.direccion.numero}}, {{personas.direccion.comuna.nombre}}</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-pane>
+</body>
 </html>
