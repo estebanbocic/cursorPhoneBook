@@ -56,6 +56,7 @@
               Región
             </div>
             <select ng-model="r[$index]" ng-options="region as region.nombre for region in regiones track by region.id">
+              <option value="">--seleeciona una region--</option>
             </select>
           </label>
         </div>
@@ -66,6 +67,7 @@
               Comunas
             </div>
             <select ng-model="searchCom" ng-options="comunas as comunas.nombre for comunas in r[$index].comunas track by comunas.nombre">
+              <option value="">--seleeciona una comuna--</option>
             </select>
           </label>
         </div>
@@ -77,12 +79,14 @@
         </div>
         <h4 class="title" align="center">Usuarios Registrados</h4>
         <div ng-controller="listPersonasCtrl">
-          <div class="list" ng-repeat="personas in datapersonas|filter:{nombre:searchNombre, apellido:searchApellido, direccion:{comuna:searchCom}}">
-            <a class="item item-avatar" href="#">
-              <img src="http://psdexport.com/storage/avatars/default.png">
-              <h2>{{personas.nombre}} {{personas.apellido}}</h2>
-              <p>{{personas.direccion.calle}} {{personas.direccion.numero}}, {{personas.direccion.comuna.nombre}}</p>
-            </a>
+          <div ng-controller="showPerfil">
+            <div class="list" ng-repeat="personas in datapersonas|filter:{nombre:searchNombre, apellido:searchApellido, direccion:{comuna:searchCom}, activo: '1'}" ng-click="idPersona(personas.id, personas.nombre, personas.apellido, personas.rut, personas.telefono)">
+              <a class="item item-avatar" href="#">
+                <img src="http://psdexport.com/storage/avatars/default.png">
+                <h2>{{personas.nombre}} {{personas.apellido}}</h2>
+                <p>{{personas.direccion.calle}} {{personas.direccion.numero}}, {{personas.direccion.comuna.nombre}}</p>
+              </a>
+            </div>
           </div>
         </div>
       </div>
